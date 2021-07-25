@@ -2,3 +2,4 @@ altair
 pandas
 plotly
 streamlit
+pillow
