@@ -1,13 +1,9 @@
 import numpy as np 
 from PIL import Image, ImageOps
-import math
 import matplotlib.pyplot as plt
-import os
 import streamlit as st
 from skimage.morphology import erosion, dilation, opening, closing
-from skimage.morphology import skeletonize
-from skimage.morphology import square
-from skimage.util import invert
+from skimage.morphology import square, disk, oval
 
 def getImage(fileupload):
     try:
@@ -25,8 +21,8 @@ def genNoisy(img, lvl):
 def getHistFigure(img:np.ndarray):
     histogram, axs = plt.subplots()
     axs = plt.hist(img.ravel(), bins=255,color="gray")
-    # axs.xlabel("Значение серого")
-    # axs.ylabel("Количество пикселей")
+    axs.set_xlabel("Значение серого")
+    axs.set_ylabel("Количество пикселей")
     return histogram
 
 
@@ -45,7 +41,7 @@ def main():
             st.pyplot(getHistFigure(img))
         with cols2:
             lvl = st.sidebar.select_slider("Размер элемента",options=np.arange(1,10,1))
-            selem = square(lvl)
+            selem = st.sidebar.selectbox("Тип элемента", [disk(lvl), square(lvl), oval(lvl)])
             func = st.sidebar.selectbox("Функция",["Эрозия","Дилатация","Открытие","Закрытие"])
             if func in "Эрозия":
                 output = erosion(img, selem)
