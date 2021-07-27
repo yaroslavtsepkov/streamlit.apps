@@ -1,5 +1,4 @@
-altair
-pandas
-plotly
+numpy
+matplotlib
 streamlit
-pillow
+scikit-image

@@ -20,9 +20,9 @@ def genNoisy(img, lvl):
     
 def getHistFigure(img:np.ndarray):
     histogram, axs = plt.subplots()
-    axs = plt.hist(img.ravel(), bins=255,color="gray")
-    #axs.set_xlabel("Значение серого")
-    #axs.set_ylabel("Количество пикселей")
+    axs.hist(img.ravel(), bins=255,color="gray")
+    axs.set_xlabel("Значение серого")
+    axs.set_ylabel("Количество пикселей")
     return histogram
 
 
