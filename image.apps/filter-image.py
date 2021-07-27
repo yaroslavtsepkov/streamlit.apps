@@ -3,7 +3,7 @@ from PIL import Image, ImageOps
 import matplotlib.pyplot as plt
 import streamlit as st
 from skimage.morphology import erosion, dilation, opening, closing
-from skimage.morphology import square, disk, oval
+from skimage.morphology import square, disk
 
 def getImage(fileupload):
     try:
@@ -21,8 +21,8 @@ def genNoisy(img, lvl):
 def getHistFigure(img:np.ndarray):
     histogram, axs = plt.subplots()
     axs = plt.hist(img.ravel(), bins=255,color="gray")
-    axs.set_xlabel("Значение серого")
-    axs.set_ylabel("Количество пикселей")
+    #axs.set_xlabel("Значение серого")
+    #axs.set_ylabel("Количество пикселей")
     return histogram
 
 
@@ -41,7 +41,11 @@ def main():
             st.pyplot(getHistFigure(img))
         with cols2:
             lvl = st.sidebar.select_slider("Размер элемента",options=np.arange(1,10,1))
-            selem = st.sidebar.selectbox("Тип элемента", [disk(lvl), square(lvl), oval(lvl)])
+            radio_btn =  st.sidebar.radio("Выбор структурного элемента", options=["Диск", "Квадрат"])
+            if radio_btn == "Диск":
+                selem = disk(lvl)
+            if radio_btn == "Квадрат":
+                selem = square(lvl)
             func = st.sidebar.selectbox("Функция",["Эрозия","Дилатация","Открытие","Закрытие"])
             if func in "Эрозия":
                 output = erosion(img, selem)
